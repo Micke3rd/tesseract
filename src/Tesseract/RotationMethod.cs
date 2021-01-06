@@ -1,12 +1,9 @@
-﻿
-using System;
-
-namespace Tesseract
+﻿namespace Tesseract
 {
 	/// <summary>
 	/// Represents the method used to rotate an image.
 	/// </summary>
-	public enum RotationMethod : int
+	public enum RotationMethod: int
 	{
 		/// <summary>
 		/// Use area map rotation, if possible.

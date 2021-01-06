@@ -1,18 +1,18 @@
-using NUnit.Framework;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Tests
 {
-    public class Tests
-    {
-        [SetUp]
-        public void Setup()
-        {
-        }
+	public class Tests
+	{
+		[TestInitialize]
+		public void Setup()
+		{
+		}
 
-        [Test]
-        public void Test1()
-        {
-            Assert.Pass();
-        }
-    }
+		[TestMethod]
+		public void Test1()
+		{
+			//Assert.Pass();
+		}
+	}
 }

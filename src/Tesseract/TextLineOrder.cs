@@ -15,21 +15,21 @@ namespace Tesseract
 	/// <see cref="TextLineOrder.TopToBottom" />.
 	/// </para>
 	/// </remarks>
-    public enum TextLineOrder : int
-    {
-    	/// <summary>
-    	/// The text lines form vertical columns ordered left to right.
-    	/// </summary>
-        LeftToRight,
-        
-    	/// <summary>
-    	/// The text lines form vertical columns ordered right to left.
-    	/// </summary>
-        RightToLeft,   
-        
-    	/// <summary>
-    	/// The text lines form horizontal columns ordered top to bottom.
-    	/// </summary>
-        TopToBottom
-    }
+	public enum TextLineOrder: int
+	{
+		/// <summary>
+		/// The text lines form vertical columns ordered left to right.
+		/// </summary>
+		LeftToRight,
+
+		/// <summary>
+		/// The text lines form vertical columns ordered right to left.
+		/// </summary>
+		RightToLeft,
+
+		/// <summary>
+		/// The text lines form horizontal columns ordered top to bottom.
+		/// </summary>
+		TopToBottom
+	}
 }

@@ -1,228 +1,283 @@
-﻿using NUnit.Framework;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.IO;
 
 namespace Tesseract.Tests
 {
-    [TestFixture]
-    public class AnalyseResultTests : TesseractTestBase
-    {
-        private string ResultsDirectory
-        {
-            get { return TestResultPath(@"Analysis\"); }
-        }
+	[TestClass]
+	public class AnalyseResultTests: TesseractTestBase
+	{
+		private string ResultsDirectory
+		{
+			get { return TestResultPath(@"Analysis\"); }
+		}
 
-        private const string ExampleImagePath = @"Ocr\phototest.tif";
+		private const string ExampleImagePath = @"Ocr\phototest.tif";
 
-        #region Setup\TearDown
+		#region Setup\TearDown
 
-        private TesseractEngine engine;
+		private TesseractEngine engine;
 
-        [TearDown]
-        public void Dispose()
-        {
-            if (engine != null) {
-                engine.Dispose();
-                engine = null;
-            }
-        }
+		[TestCleanup]
+		public void Dispose()
+		{
+			if (engine != null)
+			{
+				engine.Dispose();
+				engine = null;
+			}
+		}
 
-        [SetUp]
-        public void Init()
-        {
-            if (!Directory.Exists(ResultsDirectory)) Directory.CreateDirectory(ResultsDirectory);
+		[TestInitialize]
+		public void Init()
+		{
+			if (!Directory.Exists(ResultsDirectory)) Directory.CreateDirectory(ResultsDirectory);
 
-            engine = CreateEngine("osd");
-        }
+			engine = CreateEngine("osd");
+		}
 
-        #endregion Setup\TearDown
+		#endregion Setup\TearDown
 
-        #region Tests
+		#region Tests
 
-        [Test]
-        [TestCase(null)]
-        [TestCase(90f)]
-        [TestCase(180f)]
-        public void AnalyseLayout_RotatedImage(float? angle)
-        {
-            var exampleImagePath = TestFilePath("Ocr/phototest.tif");
-            using (var img = LoadTestImage(ExampleImagePath)) {
-                using (var rotatedImage = angle.HasValue ? img.Rotate(MathHelper.ToRadians(angle.Value)) : img.Clone()) {
-                    rotatedImage.Save(TestResultRunFile(String.Format(@"AnalyseResult\AnalyseLayout_RotateImage_{0}.png", angle)));
+		[DataTestMethod]
+		[DataRow(null)]
+		[DataRow(90f)]
+		[DataRow(180f)]
+		public void AnalyseLayout_RotatedImage(float? angle)
+		{
+			var exampleImagePath = TestFilePath("Ocr/phototest.tif");
+			using (var img = LoadTestImage(ExampleImagePath))
+			{
+				using (var rotatedImage = angle.HasValue ? img.Rotate(MathHelper.ToRadians(angle.Value)) : img.Clone())
+				{
+					rotatedImage.Save(TestResultRunFile(string.Format(@"AnalyseResult\AnalyseLayout_RotateImage_{0}.png",angle)));
 
-                    engine.DefaultPageSegMode = PageSegMode.AutoOsd;
-                    using (var page = engine.Process(rotatedImage)) {
-                        using (var pageLayout = page.GetIterator()) {
-                            pageLayout.Begin();
-                            do {
-                                var result = pageLayout.GetProperties();
-                                Orientation orient;
-                                float deskew;
+					engine.DefaultPageSegMode = PageSegMode.AutoOsd;
+					using (var page = engine.Process(rotatedImage))
+					{
+						using (var pageLayout = page.GetIterator())
+						{
+							pageLayout.Begin();
+							do
+							{
+								var result = pageLayout.GetProperties();
+								Orientation orient;
+								float deskew;
 
-                                ExpectedOrientation(angle.HasValue? angle.Value : 0, out orient, out deskew);
-                                Assert.That(result.Orientation, Is.EqualTo(orient));
+								ExpectedOrientation(angle.HasValue ? angle.Value : 0,out orient,out deskew);
+								Assert.AreEqual(result.Orientation,orient);
 
-                                if(angle.HasValue) {
-                                    if (angle == 180f) {
-                                        // This isn't correct...
-                                        Assert.That(result.WritingDirection, Is.EqualTo(WritingDirection.LeftToRight));
-                                        Assert.That(result.TextLineOrder, Is.EqualTo(TextLineOrder.TopToBottom));
-                                    } else if (angle == 90f) {
-                                        Assert.That(result.WritingDirection, Is.EqualTo(WritingDirection.LeftToRight));
-                                        Assert.That(result.TextLineOrder, Is.EqualTo(TextLineOrder.TopToBottom));
-                                    } else {
-                                        Assert.Fail("Angle not supported.");
-                                    }
-                                } else {
-                                    Assert.That(result.WritingDirection, Is.EqualTo(WritingDirection.LeftToRight));
-                                    Assert.That(result.TextLineOrder, Is.EqualTo(TextLineOrder.TopToBottom));
-                                }                               
-                            } while (pageLayout.Next(PageIteratorLevel.Block));
-                        }
-                    }
-                }
-            }
-        }
+								if (angle.HasValue)
+								{
+									if (angle == 180f)
+									{
+										// This isn't correct...
+										Assert.AreEqual(result.WritingDirection,WritingDirection.LeftToRight);
+										Assert.AreEqual(result.TextLineOrder,TextLineOrder.TopToBottom);
+									}
+									else if (angle == 90f)
+									{
+										Assert.AreEqual(result.WritingDirection,WritingDirection.LeftToRight);
+										Assert.AreEqual(result.TextLineOrder,TextLineOrder.TopToBottom);
+									}
+									else
+									{
+										Assert.Fail("Angle not supported.");
+									}
+								}
+								else
+								{
+									Assert.AreEqual(result.WritingDirection,WritingDirection.LeftToRight);
+									Assert.AreEqual(result.TextLineOrder,TextLineOrder.TopToBottom);
+								}
+							} while (pageLayout.Next(PageIteratorLevel.Block));
+						}
+					}
+				}
+			}
+		}
 
-        [Test]
-        public void CanDetectOrientationForMode(
-            [Values(PageSegMode.Auto,
-                PageSegMode.AutoOnly,
-                PageSegMode.AutoOsd,
-                PageSegMode.CircleWord,
-                PageSegMode.OsdOnly,
-                PageSegMode.SingleBlock,
-                PageSegMode.SingleBlockVertText,
-                PageSegMode.SingleChar,
-                PageSegMode.SingleColumn,
-                PageSegMode.SingleLine,
-                PageSegMode.SingleWord)]
-            PageSegMode pageSegMode)
-        {
-            using (var img = LoadTestImage(ExampleImagePath)) {
-                using (var rotatedPix = img.Rotate((float)Math.PI)) {
-                    using (var page = engine.Process(rotatedPix, pageSegMode)) {
-                        int orientation;
-                        float confidence;
-                        string scriptName;
-                        float scriptConfidence;
+		[TestMethod]
+		public void CanDetectOrientationForMode(
+			//[Values(PageSegMode.Auto,
+			//    PageSegMode.AutoOnly,
+			//    PageSegMode.AutoOsd,
+			//    PageSegMode.CircleWord,
+			//    PageSegMode.OsdOnly,
+			//    PageSegMode.SingleBlock,
+			//    PageSegMode.SingleBlockVertText,
+			//    PageSegMode.SingleChar,
+			//    PageSegMode.SingleColumn,
+			//    PageSegMode.SingleLine,
+			//    PageSegMode.SingleWord)]
+			//PageSegMode pageSegMode
+			)
+		{
+			foreach (var pageSegMode in new[] {
+			PageSegMode.Auto,
+				PageSegMode.AutoOnly,
+				PageSegMode.AutoOsd,
+				PageSegMode.CircleWord,
+				PageSegMode.OsdOnly,
+				PageSegMode.SingleBlock,
+				PageSegMode.SingleBlockVertText,
+				PageSegMode.SingleChar,
+				PageSegMode.SingleColumn,
+				PageSegMode.SingleLine,
+				PageSegMode.SingleWord
+			})
+				using (var img = LoadTestImage(ExampleImagePath))
+				{
+					using (var rotatedPix = img.Rotate((float)Math.PI))
+					{
+						using (var page = engine.Process(rotatedPix,pageSegMode))
+						{
+							int orientation;
+							float confidence;
+							string scriptName;
+							float scriptConfidence;
 
-                        page.DetectBestOrientationAndScript(out orientation, out confidence, out scriptName, out scriptConfidence);
+							page.DetectBestOrientationAndScript(out orientation,out confidence,out scriptName,out scriptConfidence);
 
-                        Assert.That(orientation, Is.EqualTo(180));
-                        Assert.That(scriptName, Is.EqualTo("Latin"));
-                    }
-                }
-            }
-        }
+							Assert.AreEqual(orientation,180);
+							Assert.AreEqual(scriptName,"Latin");
+						}
+					}
+				}
+		}
 
-        [Test]
-        [TestCase(0)]
-        [TestCase(90)]
-        [TestCase(180)]
-        [TestCase(270)]
-        public void DetectOrientation_Degrees_RotatedImage(int expectedOrientation)
-        {
-            using (var img = LoadTestImage(ExampleImagePath)) {
-                using (var rotatedPix = img.Rotate((float)expectedOrientation / 360 * (float)Math.PI * 2)) {
-                    using (var page = engine.Process(rotatedPix, PageSegMode.OsdOnly)) {
+		[DataTestMethod]
+		[DataRow(0)]
+		[DataRow(90)]
+		[DataRow(180)]
+		[DataRow(270)]
+		public void DetectOrientation_Degrees_RotatedImage(int expectedOrientation)
+		{
+			using (var img = LoadTestImage(ExampleImagePath))
+			{
+				using (var rotatedPix = img.Rotate((float)expectedOrientation / 360 * (float)Math.PI * 2))
+				{
+					using (var page = engine.Process(rotatedPix,PageSegMode.OsdOnly))
+					{
 
-                        int orientation;
-                        float confidence;
-                        string scriptName;
-                        float scriptConfidence;
+						int orientation;
+						float confidence;
+						string scriptName;
+						float scriptConfidence;
 
-                        page.DetectBestOrientationAndScript(out orientation, out confidence, out scriptName, out scriptConfidence);
+						page.DetectBestOrientationAndScript(out orientation,out confidence,out scriptName,out scriptConfidence);
 
-                        Assert.That(orientation, Is.EqualTo(expectedOrientation));
-                        Assert.That(scriptName, Is.EqualTo("Latin"));
-                    }
-                }
-            }
-        }
+						Assert.AreEqual(orientation,expectedOrientation);
+						Assert.AreEqual(scriptName,"Latin");
+					}
+				}
+			}
+		}
 
-        [Test]
-        [TestCase(0)]
-        [TestCase(90)]
-        [TestCase(180)]
-        [TestCase(270)]
-        public void DetectOrientation_Legacy_RotatedImage(int expectedOrientationDegrees)
-        {
-            using (var img = LoadTestImage(ExampleImagePath)) {
-                using (var rotatedPix = img.Rotate((float)expectedOrientationDegrees / 360 * (float)Math.PI * 2)) {
-                    using (var page = engine.Process(rotatedPix, PageSegMode.OsdOnly)) {
-                        Orientation orientation;
-                        float confidence;
+		[DataTestMethod]
+		[DataRow(0)]
+		[DataRow(90)]
+		[DataRow(180)]
+		[DataRow(270)]
+		public void DetectOrientation_Legacy_RotatedImage(int expectedOrientationDegrees)
+		{
+			using (var img = LoadTestImage(ExampleImagePath))
+			{
+				using (var rotatedPix = img.Rotate((float)expectedOrientationDegrees / 360 * (float)Math.PI * 2))
+				{
+					using (var page = engine.Process(rotatedPix,PageSegMode.OsdOnly))
+					{
+						Orientation orientation;
+						float confidence;
 
-                        page.DetectBestOrientation(out orientation, out confidence);
-                        
-                        Orientation expectedOrientation;
-                        float expectedDeskew;
-                        ExpectedOrientation(expectedOrientationDegrees, out expectedOrientation, out expectedDeskew);
+						page.DetectBestOrientation(out orientation,out confidence);
 
-                        Assert.That(orientation, Is.EqualTo(expectedOrientation));
-                    }
-                }
-            }
-        }
+						Orientation expectedOrientation;
+						float expectedDeskew;
+						ExpectedOrientation(expectedOrientationDegrees,out expectedOrientation,out expectedDeskew);
 
-
-        [Test]
-        public void GetImage(
-            [Values(PageIteratorLevel.Block, PageIteratorLevel.Para, PageIteratorLevel.TextLine, PageIteratorLevel.Word, PageIteratorLevel.Symbol)] PageIteratorLevel level, 
-            [Values(0, 3)] int padding)
-        {
-            using (var img = LoadTestImage(ExampleImagePath)) {
-                using (var page = engine.Process(img)) {
-                    using (var pageLayout = page.GetIterator()) {
-                        pageLayout.Begin();
-                        // get symbol
-                        int x, y;
-                        using (var elementImg = pageLayout.GetImage(level, padding, out x, out y)) {
-                            var elementImgFilename = String.Format(@"AnalyseResult\GetImage\ResultIterator_Image_{0}_{1}_at_({2},{3}).png", level, padding, x, y);
-
-                            // TODO: Ensure generated pix is equal to expected pix, only saving it if it's not.
-                            var destFilename = TestResultRunFile(elementImgFilename);
-                            elementImg.Save(destFilename, ImageFormat.Png);                           
-                        }
-                    }
-                }
-            }
-        }
-
-        #endregion Tests
-
-        #region Helpers
+						Assert.AreEqual(orientation,expectedOrientation);
+					}
+				}
+			}
+		}
 
 
-        private void ExpectedOrientation(float rotation, out Orientation orientation, out float deskew)
-        {
-            rotation = rotation % 360f;
-            rotation = rotation < 0 ? rotation + 360 : rotation;
+		[TestMethod]
+		public void GetImage(
+			//[Values(PageIteratorLevel.Block, PageIteratorLevel.Para, PageIteratorLevel.TextLine, PageIteratorLevel.Word, PageIteratorLevel.Symbol)] PageIteratorLevel level,
+			//[Values(0, 3)] int padding
+			)
+		{
+			foreach (var level in new[] { PageIteratorLevel.Block, PageIteratorLevel.Para, PageIteratorLevel.TextLine, PageIteratorLevel.Word,
+				PageIteratorLevel.Symbol })
+				foreach (var padding in new[] { 0,3 })
 
-            if (rotation >= 315 || rotation < 45) {
-                orientation = Orientation.PageUp;
-                deskew = -rotation;
-            } else if (rotation >= 45 && rotation < 135) {
-                orientation = Orientation.PageRight;
-                deskew = 90 - rotation;
-            } else if (rotation >= 135 && rotation < 225) {
-                orientation = Orientation.PageDown;
-                deskew = 180 - rotation;
-            } else if (rotation >= 225 && rotation < 315) {
-                orientation = Orientation.PageLeft;
-                deskew = 270 - rotation;
-            } else {
-                throw new ArgumentOutOfRangeException("rotation");
-            }
-        }
+					using (var img = LoadTestImage(ExampleImagePath))
+					{
+						using (var page = engine.Process(img))
+						{
+							using (var pageLayout = page.GetIterator())
+							{
+								pageLayout.Begin();
+								// get symbol
+								int x, y;
+								using (var elementImg = pageLayout.GetImage(level,padding,out x,out y))
+								{
+									var elementImgFilename = string.Format(@"AnalyseResult\GetImage\ResultIterator_Image_{0}_{1}_at_({2},{3}).png",level,padding,x,y);
 
-        private Pix LoadTestImage(string path)
-        {
-            var fullExampleImagePath = TestFilePath(path);
-            return Pix.LoadFromFile(fullExampleImagePath);
-        }
+									// TODO: Ensure generated pix is equal to expected pix, only saving it if it's not.
+									var destFilename = TestResultRunFile(elementImgFilename);
+									elementImg.Save(destFilename,ImageFormat.Png);
+								}
+							}
+						}
+					}
+		}
 
-        #endregion
-    }
+		#endregion Tests
+
+		#region Helpers
+
+
+		private void ExpectedOrientation(float rotation,out Orientation orientation,out float deskew)
+		{
+			rotation = rotation % 360f;
+			rotation = rotation < 0 ? rotation + 360 : rotation;
+
+			if (rotation >= 315 || rotation < 45)
+			{
+				orientation = Orientation.PageUp;
+				deskew = -rotation;
+			}
+			else if (rotation >= 45 && rotation < 135)
+			{
+				orientation = Orientation.PageRight;
+				deskew = 90 - rotation;
+			}
+			else if (rotation >= 135 && rotation < 225)
+			{
+				orientation = Orientation.PageDown;
+				deskew = 180 - rotation;
+			}
+			else if (rotation >= 225 && rotation < 315)
+			{
+				orientation = Orientation.PageLeft;
+				deskew = 270 - rotation;
+			}
+			else
+			{
+				throw new ArgumentOutOfRangeException(nameof(rotation));
+			}
+		}
+
+		private Pix LoadTestImage(string path)
+		{
+			var fullExampleImagePath = TestFilePath(path);
+			return Pix.LoadFromFile(fullExampleImagePath);
+		}
+
+		#endregion
+	}
 }

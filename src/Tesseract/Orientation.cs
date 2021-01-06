@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Tesseract
+﻿namespace Tesseract
 {
 	/// <summary>
 	/// Represents orientation that the page would need to be rotated so that .
@@ -20,23 +16,23 @@ namespace Tesseract
 	/// 	<item>PageLeft - Page needs to be rotated so the left hand side is up, 90 degress clockwise, to be readable.</item>
 	/// </list>
 	/// </remarks>
-    public enum Orientation
-    {
-    	/// <summary>
-    	/// Page is correctly alligned with up and no rotation is needed.
-    	/// </summary>
-        PageUp, 
-        /// <summary>
-        /// Page needs to be rotated so the right hand side is up, 90 degress counter clockwise, to be readable.
-        /// </summary>
-        PageRight, 
-        /// <summary>
-        /// Page needs to be rotated so the bottom side is up, 180 degress counter clockwise, to be readable.
-        /// </summary>
-        PageDown, 
-        /// <summary>
-        /// Page needs to be rotated so the left hand side is up, 90 degress clockwise, to be readable.
-        /// </summary>
-        PageLeft
-    }
+	public enum Orientation
+	{
+		/// <summary>
+		/// Page is correctly alligned with up and no rotation is needed.
+		/// </summary>
+		PageUp,
+		/// <summary>
+		/// Page needs to be rotated so the right hand side is up, 90 degress counter clockwise, to be readable.
+		/// </summary>
+		PageRight,
+		/// <summary>
+		/// Page needs to be rotated so the bottom side is up, 180 degress counter clockwise, to be readable.
+		/// </summary>
+		PageDown,
+		/// <summary>
+		/// Page needs to be rotated so the left hand side is up, 90 degress clockwise, to be readable.
+		/// </summary>
+		PageLeft
+	}
 }

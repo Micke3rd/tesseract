@@ -1,17 +1,18 @@
-﻿using NUnit.Framework;
-using System;
-using System.Diagnostics;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Tesseract.Tests
 {
-    [TestFixture]
-    public class BaseApiTests
-    {
-        [Test]
-        public void CanGetVersion()
-        {
-            var version = Interop.TessApi.BaseApiGetVersion();
-            Assert.That(version, Does.StartWith("4.1.1"));
-        }
-    }
+	[TestClass]
+	public class BaseApiTests: TesseractTestBase
+	{
+		[TestMethod]
+		public void GetVersion_Is500()
+		{
+			using (var engine = CreateEngine())
+			{
+				var version = engine.Version;
+				Assert.IsTrue(version.StartsWith("5.0.0"));
+			}
+		}
+	}
 }
