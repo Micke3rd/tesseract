@@ -23,24 +23,20 @@ namespace Tesseract
 		/// </summary>
 		public Pix Image { get; private set; }
 
-		/// <summary>
-		/// Gets the name of the image being ocr'd.
-		/// </summary>
-		/// <remarks>
-		/// This is also used for some of the more advanced functionality such as identifying the associated UZN file if present.
-		/// </remarks>
-		public string ImageName { get; private set; }
+		
 
 		/// <summary>
 		/// Gets the page segmentation mode used to OCR the specified image.
 		/// </summary>
 		public PageSegMode PageSegmentMode { get; private set; }
 
-		internal Page(TesseractEngine engine,Pix image,string imageName,Rect regionOfInterest,PageSegMode pageSegmentMode)
+		internal Page(TesseractEngine engine,Pix image
+			//,string imageName
+			,Rect regionOfInterest,PageSegMode pageSegmentMode)
 		{
 			Engine = engine;
 			Image = image;
-			ImageName = imageName;
+			//ImageName = imageName;
 			RegionOfInterest = regionOfInterest;
 			PageSegmentMode = pageSegmentMode;
 		}

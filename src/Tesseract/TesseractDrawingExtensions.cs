@@ -74,7 +74,8 @@ namespace Tesseract
 		public static Page Process(this TesseractEngine engine,Bitmap image,string inputName,Rect region,PageSegMode? pageSegMode = null)
 		{
 			var pix = PixConverter.ToPix(image);
-			var page = engine.Process(pix,inputName,region,pageSegMode);
+			pix.ImageName = inputName;
+			var page = engine.Process(pix,region,pageSegMode);
 			new TesseractEngine.PageDisposalHandle(page,pix);
 			return page;
 		}

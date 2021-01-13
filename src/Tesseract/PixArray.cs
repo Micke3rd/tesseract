@@ -28,7 +28,7 @@ namespace Tesseract
 				throw new IOException(string.Format("Failed to load image '{0}'.",filename));
 			}
 
-			return new PixArray(pixaHandle);
+			return new PixArray(pixaHandle) { Filename = filename };
 		}
 
 		public static PixArray Create(int n)
@@ -184,6 +184,8 @@ namespace Tesseract
 		private int _count;
 		private int version;
 
+		public string Filename { get; set; }
+
 		#endregion
 
 		#region Constructor
@@ -292,7 +294,9 @@ namespace Tesseract
 			{
 				throw new InvalidOperationException(string.Format("Failed to retrieve pix {0}.",pixHandle));
 			}
-			return Pix.Create(pixHandle);
+			var result = Pix.Create(pixHandle) 				;
+			result.ImageName = this.Filename;
+			return result;
 		}
 
 		/// <summary>

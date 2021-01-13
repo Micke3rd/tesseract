@@ -48,6 +48,14 @@ namespace Tesseract
 		private PixColormap colormap;
 		private HandleRef handle;
 
+		/// <summary>
+		/// Gets the name of the image being ocr'd.
+		/// </summary>
+		/// <remarks>
+		/// This is also used for some of the more advanced functionality such as identifying the associated UZN file if present.
+		/// </remarks>
+		public string ImageName { get; set; }
+
 		#endregion Fields
 
 		#region Create\Load methods
@@ -103,7 +111,9 @@ namespace Tesseract
 			{
 				throw new IOException(string.Format("Failed to load image '{0}'.",filename));
 			}
-			return Create(pixHandle);
+			var r = Create(pixHandle);
+			r.ImageName = filename;
+			return r;
 		}
 
 		public static Pix LoadFromMemory(byte[] bytes)

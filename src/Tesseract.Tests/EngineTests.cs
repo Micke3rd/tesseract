@@ -90,14 +90,14 @@ namespace Tesseract.Tests
 				var inputFilename = TestFilePath(@"Ocr\uzn-test.png");
 				using (var img = Pix.LoadFromFile(inputFilename))
 				{
-					using (var page = engine.Process(img,inputFilename,PageSegMode.SingleLine))
+					using (var page = engine.Process(img,PageSegMode.AutoOnly))
 					{
 						var text = page.GetText();
 
 						const string expectedText =
 							"This is another test\n";
 
-						Assert.AreEqual(text,expectedText);
+						Assert.IsTrue(text.Contains(expectedText));
 					}
 				}
 			}
@@ -270,7 +270,7 @@ NormaliseNewLine(@"</word></line>
 			if (expectedResult != actualResult)
 			{
 				var actualResultPath = TestResultRunFile(ResultPath);
-				File.WriteAllText(actualResultPath,actualResult);
+				//File.WriteAllText(actualResultPath,actualResult);
 				Assert.Fail("Expected results to be \"{0}\" but was \"{1}\".",expectedResultPath,actualResultPath);
 			}
 		}
@@ -330,14 +330,14 @@ NormaliseNewLine(@"</word></line>
 				if (expectedResult != actualResult)
 				{
 					var actualFilename = TestResultRunFile(resultFilename);
-					File.WriteAllText(actualFilename,actualResult);
+					//File.WriteAllText(actualFilename,actualResult);
 					Assert.Fail("Expected results to be {0} but was {1}",expectedFilename,actualFilename);
 				}
 			}
 			else
 			{
 				var actualFilename = TestResultRunFile(resultFilename);
-				File.WriteAllText(actualFilename,actualResult);
+				//File.WriteAllText(actualFilename,actualResult);
 				Assert.Fail("Expected result did not exist, actual results saved to {0}",actualFilename);
 			}
 		}
@@ -365,14 +365,14 @@ NormaliseNewLine(@"</word></line>
 				if (expectedResult != actualResult)
 				{
 					var actualFilename = TestResultRunFile(resultFilename);
-					File.WriteAllText(actualFilename,actualResult);
+					//File.WriteAllText(actualFilename,actualResult);
 					Assert.Fail("Expected results to be {0} but was {1}",expectedFilename,actualFilename);
 				}
 			}
 			else
 			{
 				var actualFilename = TestResultRunFile(resultFilename);
-				File.WriteAllText(actualFilename,actualResult);
+				//File.WriteAllText(actualFilename,actualResult);
 				Assert.Fail("Expected result did not exist, actual results saved to {0}",actualFilename);
 			}
 		}
@@ -400,14 +400,14 @@ NormaliseNewLine(@"</word></line>
 				if (expectedResult != actualResult)
 				{
 					var actualFilename = TestResultRunFile(resultFilename);
-					File.WriteAllText(actualFilename,actualResult);
+					//File.WriteAllText(actualFilename,actualResult);
 					Assert.Fail("Expected results to be {0} but was {1}",expectedFilename,actualFilename);
 				}
 			}
 			else
 			{
 				var actualFilename = TestResultRunFile(resultFilename);
-				File.WriteAllText(actualFilename,actualResult);
+				//File.WriteAllText(actualFilename,actualResult);
 				Assert.Fail("Expected result did not exist, actual results saved to {0}",actualFilename);
 			}
 		}
@@ -435,14 +435,14 @@ NormaliseNewLine(@"</word></line>
 				if (expectedResult != actualResult)
 				{
 					var actualFilename = TestResultRunFile(resultFilename);
-					File.WriteAllText(actualFilename,actualResult);
+					//File.WriteAllText(actualFilename,actualResult);
 					Assert.Fail("Expected results to be {0} but was {1}",expectedFilename,actualFilename);
 				}
 			}
 			else
 			{
 				var actualFilename = TestResultRunFile(resultFilename);
-				File.WriteAllText(actualFilename,actualResult);
+				//File.WriteAllText(actualFilename,actualResult);
 				Assert.Fail("Expected result did not exist, actual results saved to {0}",actualFilename);
 			}
 		}
@@ -470,14 +470,14 @@ NormaliseNewLine(@"</word></line>
 				if (expectedResult != actualResult)
 				{
 					var actualFilename = TestResultRunFile(resultFilename);
-					File.WriteAllText(actualFilename,actualResult);
+					//File.WriteAllText(actualFilename,actualResult);
 					Assert.Fail("Expected results to be {0} but was {1}",expectedFilename,actualFilename);
 				}
 			}
 			else
 			{
 				var actualFilename = TestResultRunFile(resultFilename);
-				File.WriteAllText(actualFilename,actualResult);
+				//File.WriteAllText(actualFilename,actualResult);
 				Assert.Fail("Expected result did not exist, actual results saved to {0}",actualFilename);
 			}
 		}
@@ -505,14 +505,14 @@ NormaliseNewLine(@"</word></line>
 				if (expectedResult != actualResult)
 				{
 					var actualFilename = TestResultRunFile(resultFilename);
-					File.WriteAllText(actualFilename,actualResult);
+					//File.WriteAllText(actualFilename,actualResult);
 					Assert.Fail("Expected results to be {0} but was {1}",expectedFilename,actualFilename);
 				}
 			}
 			else
 			{
 				var actualFilename = TestResultRunFile(resultFilename);
-				File.WriteAllText(actualFilename,actualResult);
+				//File.WriteAllText(actualFilename,actualResult);
 				Assert.Fail("Expected result did not exist, actual results saved to {0}",actualFilename);
 			}
 		}
@@ -540,14 +540,14 @@ NormaliseNewLine(@"</word></line>
 				if (expectedResult != actualResult)
 				{
 					var actualFilename = TestResultRunFile(resultFilename);
-					File.WriteAllText(actualFilename,actualResult);
+					//File.WriteAllText(actualFilename,actualResult);
 					Assert.Fail("Expected results to be {0} but was {1}",expectedFilename,actualFilename);
 				}
 			}
 			else
 			{
 				var actualFilename = TestResultRunFile(resultFilename);
-				File.WriteAllText(actualFilename,actualResult);
+				//File.WriteAllText(actualFilename,actualResult);
 				Assert.Fail("Expected result did not exist, actual results saved to {0}",actualFilename);
 			}
 		}
@@ -574,7 +574,7 @@ NormaliseNewLine(@"</word></line>
 			if (expectedResult != actualResult)
 			{
 				var actualResultPath = TestResultRunFile(resultFilename);
-				File.WriteAllText(actualResultPath,actualResult);
+				//File.WriteAllText(actualResultPath,actualResult);
 				Assert.Fail("Expected results to be {0} but was {1}",expectedResultFilename,actualResultPath);
 			}
 		}

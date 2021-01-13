@@ -202,7 +202,7 @@ namespace Tesseract.Tests
 					Assert.AreEqual(renderer.PageNumber,expectedPageNumber);
 					foreach (var pix in pixA)
 					{
-						using (var page = _engine.Process(pix,imageName))
+						using (var page = _engine.Process(pix))
 						{
 							var addedPage = renderer.AddPage(page);
 							expectedPageNumber++;
@@ -225,7 +225,7 @@ namespace Tesseract.Tests
 				using (renderer.BeginDocument(imageName))
 				{
 					Assert.AreEqual(renderer.PageNumber,-1);
-					using (var page = _engine.Process(pix,imageName))
+					using (var page = _engine.Process(pix))
 					{
 						var addedPage = renderer.AddPage(page);
 
@@ -249,7 +249,7 @@ namespace Tesseract.Tests
 					Assert.AreEqual(renderer.PageNumber,expectedPageNumber);
 					foreach (var pix in pixA)
 					{
-						using (var page = _engine.Process(pix,imageName))
+						using (var page = _engine.Process(pix))
 						{
 							var addedPage = renderer.AddPage(page);
 							expectedPageNumber++;

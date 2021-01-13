@@ -201,6 +201,8 @@ namespace Tesseract
 			get { return handle; }
 		}
 
+		
+
 		/// <summary>
 		/// Processes the specific image.
 		/// </summary>
@@ -208,10 +210,11 @@ namespace Tesseract
 		/// You can only have one result iterator open at any one time.
 		/// </remarks>
 		/// <param name="image">The image to process.</param>
+		/// <param name="inputName">Sets the input file's name, only needed for training or loading a uzn file.</param>
 		/// <param name="pageSegMode">The page layout analyasis method to use.</param>
-		public Page Process(Pix image, PageSegMode? pageSegMode = null)
+		public Page Process(Pix image,  PageSegMode? pageSegMode = null)
 		{
-			return Process(image, null, new Rect(0, 0, image.Width, image.Height), pageSegMode);
+			return Process(image,  new Rect(0, 0, image.Width, image.Height), pageSegMode);
 		}
 
 		/// <summary>
@@ -221,40 +224,11 @@ namespace Tesseract
 		/// You can only have one result iterator open at any one time.
 		/// </remarks>
 		/// <param name="image">The image to process.</param>
+		/// <param name="inputName">Sets the input file's name, only needed for training or loading a uzn file.</param>
 		/// <param name="region">The image region to process.</param>
 		/// <param name="pageSegMode">The page layout analyasis method to use.</param>
 		/// <returns>A result iterator</returns>
 		public Page Process(Pix image, Rect region, PageSegMode? pageSegMode = null)
-		{
-			return Process(image, null, region, pageSegMode);
-		}
-
-		/// <summary>
-		/// Processes the specific image.
-		/// </summary>
-		/// <remarks>
-		/// You can only have one result iterator open at any one time.
-		/// </remarks>
-		/// <param name="image">The image to process.</param>
-		/// <param name="inputName">Sets the input file's name, only needed for training or loading a uzn file.</param>
-		/// <param name="pageSegMode">The page layout analyasis method to use.</param>
-		public Page Process(Pix image, string inputName, PageSegMode? pageSegMode = null)
-		{
-			return Process(image, inputName, new Rect(0, 0, image.Width, image.Height), pageSegMode);
-		}
-
-		/// <summary>
-		/// Processes a specified region in the image using the specified page layout analysis mode.
-		/// </summary>
-		/// <remarks>
-		/// You can only have one result iterator open at any one time.
-		/// </remarks>
-		/// <param name="image">The image to process.</param>
-		/// <param name="inputName">Sets the input file's name, only needed for training or loading a uzn file.</param>
-		/// <param name="region">The image region to process.</param>
-		/// <param name="pageSegMode">The page layout analyasis method to use.</param>
-		/// <returns>A result iterator</returns>
-		public Page Process(Pix image, string inputName, Rect region, PageSegMode? pageSegMode = null)
 		{
 			if (image == null) throw new ArgumentNullException(nameof(image));
 			if (region.X1 < 0 || region.Y1 < 0 || region.X2 > image.Width || region.Y2 > image.Height)
@@ -266,11 +240,11 @@ namespace Tesseract
 			var actualPageSegmentMode = pageSegMode.HasValue ? pageSegMode.Value : DefaultPageSegMode;
 			Interop.TessApiSignatures.BaseAPISetPageSegMode(handle, actualPageSegmentMode);
 			Interop.TessApiSignatures.BaseApiSetImage(handle, image.Handle);
-			if (!string.IsNullOrEmpty(inputName))
+			if (!string.IsNullOrEmpty(image.ImageName))
 			{
-				Interop.TessApiSignatures.BaseApiSetInputName(handle, inputName);
+				Interop.TessApiSignatures.BaseApiSetInputName(handle, image.ImageName);
 			}
-			var page = new Page(this, image, inputName, region, actualPageSegmentMode);
+			var page = new Page(this, image,  region, actualPageSegmentMode);
 			page.Disposed += OnIteratorDisposed;
 			return page;
 		}
@@ -343,7 +317,8 @@ namespace Tesseract
 		public Page Process(Bitmap image, string inputName, Rect region, PageSegMode? pageSegMode = null)
 		{
 			var pix = PixConverter.ToPix(image);
-			var page = Process(pix, inputName, region, pageSegMode);
+			pix.ImageName = inputName;
+			var page = Process(pix,  region, pageSegMode);
 			new PageDisposalHandle(page, pix);
 			return page;
 		}
