@@ -98,110 +98,110 @@ namespace Tesseract.Tests
 			}
 		}
 
-		[TestMethod]
-		public void CanDetectOrientationForMode(
-			//[Values(PageSegMode.Auto,
-			//    PageSegMode.AutoOnly,
-			//    PageSegMode.AutoOsd,
-			//    PageSegMode.CircleWord,
-			//    PageSegMode.OsdOnly,
-			//    PageSegMode.SingleBlock,
-			//    PageSegMode.SingleBlockVertText,
-			//    PageSegMode.SingleChar,
-			//    PageSegMode.SingleColumn,
-			//    PageSegMode.SingleLine,
-			//    PageSegMode.SingleWord)]
-			//PageSegMode pageSegMode
-			)
-		{
-			foreach (var pageSegMode in new[] {
-			PageSegMode.Auto,
-				PageSegMode.AutoOnly,
-				PageSegMode.AutoOsd,
-				PageSegMode.CircleWord,
-				PageSegMode.OsdOnly,
-				PageSegMode.SingleBlock,
-				PageSegMode.SingleBlockVertText,
-				PageSegMode.SingleChar,
-				PageSegMode.SingleColumn,
-				PageSegMode.SingleLine,
-				PageSegMode.SingleWord
-			})
-				using (var img = LoadTestImage(ExampleImagePath))
-				{
-					using (var rotatedPix = img.Rotate((float)Math.PI))
-					{
-						using (var page = engine.Process(rotatedPix,pageSegMode))
-						{
-							int orientation;
-							float confidence;
-							string scriptName;
-							float scriptConfidence;
+		//[TestMethod]
+		//public void CanDetectOrientationForMode(
+		//	//[Values(PageSegMode.Auto,
+		//	//    PageSegMode.AutoOnly,
+		//	//    PageSegMode.AutoOsd,
+		//	//    PageSegMode.CircleWord,
+		//	//    PageSegMode.OsdOnly,
+		//	//    PageSegMode.SingleBlock,
+		//	//    PageSegMode.SingleBlockVertText,
+		//	//    PageSegMode.SingleChar,
+		//	//    PageSegMode.SingleColumn,
+		//	//    PageSegMode.SingleLine,
+		//	//    PageSegMode.SingleWord)]
+		//	//PageSegMode pageSegMode
+		//	)
+		//{
+		//	foreach (var pageSegMode in new[] {
+		//	PageSegMode.Auto,
+		//		PageSegMode.AutoOnly,
+		//		PageSegMode.AutoOsd,
+		//		PageSegMode.CircleWord,
+		//		PageSegMode.OsdOnly,
+		//		PageSegMode.SingleBlock,
+		//		PageSegMode.SingleBlockVertText,
+		//		PageSegMode.SingleChar,
+		//		PageSegMode.SingleColumn,
+		//		PageSegMode.SingleLine,
+		//		PageSegMode.SingleWord
+		//	})
+		//		using (var img = LoadTestImage(ExampleImagePath))
+		//		{
+		//			using (var rotatedPix = img.Rotate((float)Math.PI))
+		//			{
+		//				using (var page = engine.Process(rotatedPix,pageSegMode))
+		//				{
+		//					int orientation;
+		//					float confidence;
+		//					string scriptName;
+		//					float scriptConfidence;
 
-							page.DetectBestOrientationAndScript(out orientation,out confidence,out scriptName,out scriptConfidence);
+		//					page.DetectBestOrientationAndScript(out orientation,out confidence,out scriptName,out scriptConfidence);
 
-							Assert.AreEqual(orientation,180);
-							Assert.AreEqual(scriptName,"Latin");
-						}
-					}
-				}
-		}
+		//					Assert.AreEqual(orientation,180);
+		//					Assert.AreEqual(scriptName,"Latin");
+		//				}
+		//			}
+		//		}
+		//}
 
-		[DataTestMethod]
-		[DataRow(0)]
-		[DataRow(90)]
-		[DataRow(180)]
-		[DataRow(270)]
-		public void DetectOrientation_Degrees_RotatedImage(int expectedOrientation)
-		{
-			using (var img = LoadTestImage(ExampleImagePath))
-			{
-				using (var rotatedPix = img.Rotate((float)expectedOrientation / 360 * (float)Math.PI * 2))
-				{
-					using (var page = engine.Process(rotatedPix,PageSegMode.OsdOnly))
-					{
+		//[DataTestMethod]
+		//[DataRow(0)]
+		//[DataRow(90)]
+		//[DataRow(180)]
+		//[DataRow(270)]
+		//public void DetectOrientation_Degrees_RotatedImage(int expectedOrientation)
+		//{
+		//	using (var img = LoadTestImage(ExampleImagePath))
+		//	{
+		//		using (var rotatedPix = img.Rotate((float)expectedOrientation / 360 * (float)Math.PI * 2))
+		//		{
+		//			using (var page = engine.Process(rotatedPix,PageSegMode.OsdOnly))
+		//			{
 
-						int orientation;
-						float confidence;
-						string scriptName;
-						float scriptConfidence;
+		//				int orientation;
+		//				float confidence;
+		//				string scriptName;
+		//				float scriptConfidence;
 
-						page.DetectBestOrientationAndScript(out orientation,out confidence,out scriptName,out scriptConfidence);
+		//				page.DetectBestOrientationAndScript(out orientation,out confidence,out scriptName,out scriptConfidence);
 
-						Assert.AreEqual(orientation,expectedOrientation);
-						Assert.AreEqual(scriptName,"Latin");
-					}
-				}
-			}
-		}
+		//				Assert.AreEqual(orientation,expectedOrientation);
+		//				Assert.AreEqual(scriptName,"Latin");
+		//			}
+		//		}
+		//	}
+		//}
 
-		[DataTestMethod]
-		[DataRow(0)]
-		[DataRow(90)]
-		[DataRow(180)]
-		[DataRow(270)]
-		public void DetectOrientation_Legacy_RotatedImage(int expectedOrientationDegrees)
-		{
-			using (var img = LoadTestImage(ExampleImagePath))
-			{
-				using (var rotatedPix = img.Rotate((float)expectedOrientationDegrees / 360 * (float)Math.PI * 2))
-				{
-					using (var page = engine.Process(rotatedPix,PageSegMode.OsdOnly))
-					{
-						Orientation orientation;
-						float confidence;
+		//[DataTestMethod]
+		//[DataRow(0)]
+		//[DataRow(90)]
+		//[DataRow(180)]
+		//[DataRow(270)]
+		//public void DetectOrientation_Legacy_RotatedImage(int expectedOrientationDegrees)
+		//{
+		//	using (var img = LoadTestImage(ExampleImagePath))
+		//	{
+		//		using (var rotatedPix = img.Rotate((float)expectedOrientationDegrees / 360 * (float)Math.PI * 2))
+		//		{
+		//			using (var page = engine.Process(rotatedPix,PageSegMode.OsdOnly))
+		//			{
+		//				Orientation orientation;
+		//				float confidence;
 
-						page.DetectBestOrientation(out orientation,out confidence);
+		//				page.DetectBestOrientation(out orientation,out confidence);
 
-						Orientation expectedOrientation;
-						float expectedDeskew;
-						ExpectedOrientation(expectedOrientationDegrees,out expectedOrientation,out expectedDeskew);
+		//				Orientation expectedOrientation;
+		//				float expectedDeskew;
+		//				ExpectedOrientation(expectedOrientationDegrees,out expectedOrientation,out expectedDeskew);
 
-						Assert.AreEqual(orientation,expectedOrientation);
-					}
-				}
-			}
-		}
+		//				Assert.AreEqual(orientation,expectedOrientation);
+		//			}
+		//		}
+		//	}
+		//}
 
 
 		[TestMethod]

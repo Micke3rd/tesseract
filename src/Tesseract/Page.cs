@@ -274,95 +274,95 @@ namespace Tesseract
 			return boxList;
 		}
 
-		/// <summary>
-		/// Detects the page orientation, with corresponding confidence when using <see cref="PageSegMode.OsdOnly"/>.
-		/// </summary>
-		/// <remarks>
-		/// If using full page segmentation mode (i.e. AutoOsd) then consider using <see cref="AnalyseLayout"/> instead as this also provides a
-		/// deskew angle which isn't available when just performing orientation detection.
-		/// </remarks>
-		/// <param name="orientation">The page orientation.</param>
-		/// <param name="confidence">The confidence level of the orientation (15 is reasonably confident).</param>
-		/// 
-		[Obsolete("Use DetectBestOrientation(int orientationDegrees, float confidence) that returns orientation in degrees instead.")]
-		public void DetectBestOrientation(out Orientation orientation,out float confidence)
-		{
-			int orientationDegrees;
-			float orientationConfidence;
-			DetectBestOrientation(out orientationDegrees,out orientationConfidence);
+		///// <summary>
+		///// Detects the page orientation, with corresponding confidence when using <see cref="PageSegMode.OsdOnly"/>.
+		///// </summary>
+		///// <remarks>
+		///// If using full page segmentation mode (i.e. AutoOsd) then consider using <see cref="AnalyseLayout"/> instead as this also provides a
+		///// deskew angle which isn't available when just performing orientation detection.
+		///// </remarks>
+		///// <param name="orientation">The page orientation.</param>
+		///// <param name="confidence">The confidence level of the orientation (15 is reasonably confident).</param>
+		///// 
+		//[Obsolete("Use DetectBestOrientation(int orientationDegrees, float confidence) that returns orientation in degrees instead.")]
+		//public void DetectBestOrientation(out Orientation orientation,out float confidence)
+		//{
+		//	int orientationDegrees;
+		//	float orientationConfidence;
+		//	DetectBestOrientation(out orientationDegrees,out orientationConfidence);
 
-			// convert angle to 0-360 (shouldn't be required but do it just o be safe).
-			orientationDegrees = orientationDegrees % 360;
-			if (orientationDegrees < 0)
-			{
-				orientationDegrees += 360;
-			}
+		//	// convert angle to 0-360 (shouldn't be required but do it just o be safe).
+		//	orientationDegrees = orientationDegrees % 360;
+		//	if (orientationDegrees < 0)
+		//	{
+		//		orientationDegrees += 360;
+		//	}
 
-			if (orientationDegrees > 315 || orientationDegrees <= 45)
-			{
-				orientation = Orientation.PageUp;
-			}
-			else if (orientationDegrees > 45 && orientationDegrees <= 135)
-			{
-				orientation = Orientation.PageRight;
-			}
-			else if (orientationDegrees > 135 && orientationDegrees <= 225)
-			{
-				orientation = Orientation.PageDown;
-			}
-			else
-			{
-				orientation = Orientation.PageLeft;
-			}
+		//	if (orientationDegrees > 315 || orientationDegrees <= 45)
+		//	{
+		//		orientation = Orientation.PageUp;
+		//	}
+		//	else if (orientationDegrees > 45 && orientationDegrees <= 135)
+		//	{
+		//		orientation = Orientation.PageRight;
+		//	}
+		//	else if (orientationDegrees > 135 && orientationDegrees <= 225)
+		//	{
+		//		orientation = Orientation.PageDown;
+		//	}
+		//	else
+		//	{
+		//		orientation = Orientation.PageLeft;
+		//	}
 
-			confidence = orientationConfidence;
-		}
+		//	confidence = orientationConfidence;
+		//}
 
-		/// <summary>
-		/// Detects the page orientation, with corresponding confidence when using <see cref="PageSegMode.OsdOnly"/>.
-		/// </summary>
-		/// <remarks>
-		/// If using full page segmentation mode (i.e. AutoOsd) then consider using <see cref="AnalyseLayout"/> instead as this also provides a
-		/// deskew angle which isn't available when just performing orientation detection.
-		/// </remarks>
-		/// <param name="orientation">The detected clockwise page rotation in degrees (0, 90, 180, or 270).</param>
-		/// <param name="confidence">The confidence level of the orientation (15 is reasonably confident).</param>
-		public void DetectBestOrientation(out int orientation,out float confidence)
-		{
-			string scriptName;
-			float scriptConfidence;
-			DetectBestOrientationAndScript(out orientation,out confidence,out scriptName,out scriptConfidence);
-		}
+		///// <summary>
+		///// Detects the page orientation, with corresponding confidence when using <see cref="PageSegMode.OsdOnly"/>.
+		///// </summary>
+		///// <remarks>
+		///// If using full page segmentation mode (i.e. AutoOsd) then consider using <see cref="AnalyseLayout"/> instead as this also provides a
+		///// deskew angle which isn't available when just performing orientation detection.
+		///// </remarks>
+		///// <param name="orientation">The detected clockwise page rotation in degrees (0, 90, 180, or 270).</param>
+		///// <param name="confidence">The confidence level of the orientation (15 is reasonably confident).</param>
+		//public void DetectBestOrientation(out int orientation,out float confidence)
+		//{
+		//	string scriptName;
+		//	float scriptConfidence;
+		//	DetectBestOrientationAndScript(out orientation,out confidence,out scriptName,out scriptConfidence);
+		//}
 
 
-		/// <summary>
-		/// Detects the page orientation, with corresponding confidence when using <see cref="PageSegMode.OsdOnly"/>.
-		/// </summary>
-		/// <remarks>
-		/// If using full page segmentation mode (i.e. AutoOsd) then consider using <see cref="AnalyseLayout"/> instead as this also provides a
-		/// deskew angle which isn't available when just performing orientation detection.
-		/// </remarks>
-		/// <param name="orientation">The detected clockwise page rotation in degrees (0, 90, 180, or 270).</param>
-		/// <param name="confidence">The confidence level of the orientation (15 is reasonably confident).</param>
-		/// <param name="scriptName">The name of the script (e.g. Latin)</param>
-		/// <param name="scriptConfidence">The confidence level in the script</param>
-		public void DetectBestOrientationAndScript(out int orientation,out float confidence,out string scriptName,out float scriptConfidence)
-		{
-			int orient_deg;
-			float orient_conf;
-			float script_conf;
+		///// <summary>
+		///// Detects the page orientation, with corresponding confidence when using <see cref="PageSegMode.OsdOnly"/>.
+		///// </summary>
+		///// <remarks>
+		///// If using full page segmentation mode (i.e. AutoOsd) then consider using <see cref="AnalyseLayout"/> instead as this also provides a
+		///// deskew angle which isn't available when just performing orientation detection.
+		///// </remarks>
+		///// <param name="orientation">The detected clockwise page rotation in degrees (0, 90, 180, or 270).</param>
+		///// <param name="confidence">The confidence level of the orientation (15 is reasonably confident).</param>
+		///// <param name="scriptName">The name of the script (e.g. Latin)</param>
+		///// <param name="scriptConfidence">The confidence level in the script</param>
+		//public void DetectBestOrientationAndScript(out int orientation,out float confidence,out string scriptName,out float scriptConfidence)
+		//{
+		//	int orient_deg;
+		//	float orient_conf;
+		//	float script_conf;
 
-			if (TessApiSignatures.TessBaseAPIDetectOrientationScript(Engine.Handle,out orient_deg,out orient_conf,out scriptName,out script_conf))
-			{
-				orientation = orient_deg;
-				confidence = orient_conf;
-				scriptConfidence = script_conf;
-			}
-			else
-			{
-				throw new TesseractException("Failed to detect image orientation.");
-			}
-		}
+		//	if (TessApiSignatures.TessBaseAPIDetectOrientationScript(Engine.Handle,out orient_deg,out orient_conf,out scriptName,out script_conf))
+		//	{
+		//		orientation = orient_deg;
+		//		confidence = orient_conf;
+		//		scriptConfidence = script_conf;
+		//	}
+		//	else
+		//	{
+		//		throw new TesseractException("Failed to detect image orientation.");
+		//	}
+		//}
 
 		internal void Recognize()
 		{

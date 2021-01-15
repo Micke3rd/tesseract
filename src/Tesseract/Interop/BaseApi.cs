@@ -45,15 +45,15 @@ namespace Tesseract.Interop
 		[DllImport(Constants.TesseractDllName,CallingConvention = CallingConvention.Cdecl,EntryPoint = "TessBaseAPIDelete")]
 		internal static extern void BaseApiDelete(HandleRef ptr);
 
-		[DllImport(Constants.TesseractDllName,CallingConvention = CallingConvention.Cdecl,EntryPoint = "TessBaseAPIDetectOrientationScript",CharSet = CharSet.Ansi)]
-		internal static extern bool TessBaseAPIDetectOrientationScriptInternal(HandleRef handle,out int orient_deg,out float orient_conf,out IntPtr script_name,out float script_conf); // The script name is internal memory, canut marshall or free will blow up Tesseract
-		internal static bool TessBaseAPIDetectOrientationScript(HandleRef handle,out int orient_deg,out float orient_conf,out string script_name,out float script_conf)
-		{
-			IntPtr script_name_ptr;
-			var rv = TessBaseAPIDetectOrientationScriptInternal(handle,out orient_deg,out orient_conf,out script_name_ptr,out script_conf);
-			script_name = MarshalHelper.PtrToString(script_name_ptr);
-			return rv;
-		}
+		//[DllImport(Constants.TesseractDllName,CallingConvention = CallingConvention.Cdecl,EntryPoint = "TessBaseAPIDetectOrientationScript",CharSet = CharSet.Ansi)]
+		//internal static extern bool TessBaseAPIDetectOrientationScriptInternal(HandleRef handle,out int orient_deg,out float orient_conf,out IntPtr script_name,out float script_conf); // The script name is internal memory, canut marshall or free will blow up Tesseract
+		//internal static bool TessBaseAPIDetectOrientationScript(HandleRef handle,out int orient_deg,out float orient_conf,out string script_name,out float script_conf)
+		//{
+		//	IntPtr script_name_ptr;
+		//	var rv = TessBaseAPIDetectOrientationScriptInternal(handle,out orient_deg,out orient_conf,out script_name_ptr,out script_conf);
+		//	script_name = MarshalHelper.PtrToString(script_name_ptr);
+		//	return rv;
+		//}
 
 		[DllImport(Constants.TesseractDllName,CallingConvention = CallingConvention.Cdecl,EntryPoint = "TessBaseAPIGetBoolVariable")]
 		internal static extern bool BaseApiGetBoolVariable(HandleRef handle,string name,out bool value);
