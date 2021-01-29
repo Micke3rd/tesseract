@@ -78,7 +78,7 @@ namespace Tesseract
 			}
 		}
 
-		private void CopyColormap(Bitmap img,Pix pix)
+		private static void CopyColormap(Bitmap img,Pix pix)
 		{
 			var imgPalette = img.Palette;
 			var imgPaletteEntries = imgPalette.Entries;
@@ -101,7 +101,7 @@ namespace Tesseract
 			}
 		}
 
-		private int GetPixDepth(PixelFormat pixelFormat)
+		private static int GetPixDepth(PixelFormat pixelFormat)
 		{
 			switch (pixelFormat)
 			{
@@ -121,7 +121,7 @@ namespace Tesseract
 			}
 		}
 
-		private unsafe void TransferDataFormat1bppIndexed(BitmapData imgData,PixData pixData)
+		private static unsafe void TransferDataFormat1bppIndexed(BitmapData imgData,PixData pixData)
 		{
 			var height = imgData.Height;
 			var width = imgData.Width / 8;
@@ -138,7 +138,7 @@ namespace Tesseract
 			}
 		}
 
-		private unsafe void TransferDataFormat24bppRgb(BitmapData imgData,PixData pixData)
+		private static unsafe void TransferDataFormat24bppRgb(BitmapData imgData,PixData pixData)
 		{
 			var imgFormat = imgData.PixelFormat;
 			var height = imgData.Height;
@@ -160,7 +160,7 @@ namespace Tesseract
 			}
 		}
 
-		private unsafe void TransferDataFormat32bppRgb(BitmapData imgData,PixData pixData)
+		private static unsafe void TransferDataFormat32bppRgb(BitmapData imgData,PixData pixData)
 		{
 			var imgFormat = imgData.PixelFormat;
 			var height = imgData.Height;
@@ -182,7 +182,7 @@ namespace Tesseract
 			}
 		}
 
-		private unsafe void TransferDataFormat32bppArgb(BitmapData imgData,PixData pixData)
+		private static unsafe void TransferDataFormat32bppArgb(BitmapData imgData,PixData pixData)
 		{
 			var imgFormat = imgData.PixelFormat;
 			var height = imgData.Height;
@@ -205,7 +205,7 @@ namespace Tesseract
 			}
 		}
 
-		private unsafe void TransferDataFormat8bppIndexed(BitmapData imgData,PixData pixData)
+		private static unsafe void TransferDataFormat8bppIndexed(BitmapData imgData,PixData pixData)
 		{
 			var height = imgData.Height;
 			var width = imgData.Width;

@@ -188,7 +188,7 @@ namespace Tesseract
 		/// <summary>
 		/// Get the version from the Tesseract DLL.
 		/// </summary>
-		public string Version
+		public static string Version
 		{
 			get
 			{
@@ -337,7 +337,7 @@ namespace Tesseract
 			}
 		}
 
-		private string GetTessDataPrefix()
+		private static string GetTessDataPrefix()
 		{
 			try
 			{

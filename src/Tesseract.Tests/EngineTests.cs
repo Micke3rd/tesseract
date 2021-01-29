@@ -628,7 +628,7 @@ NormaliseNewLine(@"</word></line>
 
 		[Ignore("Missing russian language data")]
 
-		public void Initialise_Rus_ShouldStartEngine()
+		public static void Initialise_Rus_ShouldStartEngine()
 		{
 			using (var engine = new TesseractEngine(DataPath,"rus",EngineMode.Default))
 			{
@@ -669,7 +669,7 @@ NormaliseNewLine(@"</word></line>
 			};
 		}
 
-		private string WriteResultsToString(Page page,bool outputChoices)
+		private static string WriteResultsToString(Page page,bool outputChoices)
 		{
 			var output = new StringBuilder();
 			using (var iter = page.GetIterator())

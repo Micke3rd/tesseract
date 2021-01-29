@@ -178,7 +178,7 @@ namespace Tesseract.Tests.Leptonica.PixTests
 			}
 		}
 
-		private void SaveResult(Pix result,string filename)
+		private static void SaveResult(Pix result,string filename)
 		{
 			var runFilename = TestResultRunFile(Path.Combine(ResultsDirectory,filename));
 			result.Save(runFilename);

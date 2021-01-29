@@ -150,7 +150,7 @@ namespace Tesseract.Tests.Leptonica
 			}
 		}
 
-		private unsafe PixColor GetPixel(Pix pix,int x,int y)
+		private static unsafe PixColor GetPixel(Pix pix,int x,int y)
 		{
 			var pixDepth = pix.Depth;
 			var pixData = pix.GetData();

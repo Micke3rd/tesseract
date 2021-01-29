@@ -264,7 +264,7 @@ namespace Tesseract.Tests
 			}
 		}
 
-		private PixArray ReadImageFileIntoPixArray(string filename)
+		private static PixArray ReadImageFileIntoPixArray(string filename)
 		{
 			if (filename.ToLower().EndsWith(".tif") || filename.ToLower().EndsWith(".tiff"))
 			{

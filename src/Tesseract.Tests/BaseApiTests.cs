@@ -10,7 +10,7 @@ namespace Tesseract.Tests
 		{
 			using (var engine = CreateEngine())
 			{
-				var version = engine.Version;
+				var version = TesseractEngine.Version;
 				Assert.IsTrue(version.StartsWith("5.0.0"));
 			}
 		}

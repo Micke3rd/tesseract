@@ -7,7 +7,7 @@ namespace Tesseract.Tests
 	[TestClass]
 	public class AnalyseResultTests: TesseractTestBase
 	{
-		private string ResultsDirectory
+		private static string ResultsDirectory
 		{
 			get { return TestResultPath(@"Analysis\"); }
 		}
@@ -241,7 +241,7 @@ namespace Tesseract.Tests
 		#region Helpers
 
 
-		private void ExpectedOrientation(float rotation,out Orientation orientation,out float deskew)
+		private static void ExpectedOrientation(float rotation,out Orientation orientation,out float deskew)
 		{
 			rotation = rotation % 360f;
 			rotation = rotation < 0 ? rotation + 360 : rotation;
@@ -272,7 +272,7 @@ namespace Tesseract.Tests
 			}
 		}
 
-		private Pix LoadTestImage(string path)
+		private static Pix LoadTestImage(string path)
 		{
 			var fullExampleImagePath = TestFilePath(path);
 			return Pix.LoadFromFile(fullExampleImagePath);

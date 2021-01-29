@@ -67,7 +67,7 @@ namespace Tesseract
 			}
 		}
 
-		private unsafe void TransferData32(PixData pixData,BitmapData imgData,int alphaMask)
+		private static unsafe void TransferData32(PixData pixData,BitmapData imgData,int alphaMask)
 		{
 			var imgFormat = imgData.PixelFormat;
 			var height = imgData.Height;
@@ -91,7 +91,7 @@ namespace Tesseract
 			}
 		}
 
-		private unsafe void TransferData16(PixData pixData,BitmapData imgData)
+		private static unsafe void TransferData16(PixData pixData,BitmapData imgData)
 		{
 			var imgFormat = imgData.PixelFormat;
 			var height = imgData.Height;
@@ -111,7 +111,7 @@ namespace Tesseract
 			}
 		}
 
-		private unsafe void TransferData8(PixData pixData,BitmapData imgData)
+		private static unsafe void TransferData8(PixData pixData,BitmapData imgData)
 		{
 			var imgFormat = imgData.PixelFormat;
 			var height = imgData.Height;
@@ -131,7 +131,7 @@ namespace Tesseract
 			}
 		}
 
-		private unsafe void TransferData1(PixData pixData,BitmapData imgData)
+		private static unsafe void TransferData1(PixData pixData,BitmapData imgData)
 		{
 			var imgFormat = imgData.PixelFormat;
 			var height = imgData.Height;
@@ -151,7 +151,7 @@ namespace Tesseract
 			}
 		}
 
-		private void TransferPalette(Pix pix,Bitmap img)
+		private static void TransferPalette(Pix pix,Bitmap img)
 		{
 			var pallete = img.Palette;
 			var maxColors = pallete.Entries.Length;
@@ -178,7 +178,7 @@ namespace Tesseract
 		}
 
 
-		private PixelFormat GetPixelFormat(Pix pix)
+		private static PixelFormat GetPixelFormat(Pix pix)
 		{
 			switch (pix.Depth)
 			{
