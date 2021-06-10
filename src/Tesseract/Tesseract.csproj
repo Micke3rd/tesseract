@@ -24,7 +24,7 @@
     <Folder Include="x64\" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\..\..\build\x64\bin\leptonica-1.81.0.dll" Link="x64\leptonica-1.81.0.dll">
+    <None Include="..\..\..\build\x64\bin\leptonica-1.81.1.dll" Link="x64\leptonica-1.81.1.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="..\..\..\build\x64\bin\tesseract.exe" Link="x64\tesseract.exe">
