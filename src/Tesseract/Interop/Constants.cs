@@ -5,7 +5,7 @@
 	/// </summary>
 	internal static class Constants
 	{
-		public const string LeptonicaDllName = "leptonica-1.81.1.dll";
+		public const string LeptonicaDllName = "leptonica-1.82.0.dll";
 		public const string TesseractDllName = "tesseract50.dll";
 
 		// tesseract uses an int to represent true false values.
